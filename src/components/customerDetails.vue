@@ -3,20 +3,20 @@
 import {computed, ref} from 'vue'
     const firstName = ref('');
     const lastName = ref('');
-    const address = ref('');
+    const email = ref('');
     const date = ref('')
     const entries = ref([])    
     const addEntry = () => {
         entries.value.push({
             firstName : firstName.value,
             lastName : lastName.value,
-            address : address.value,
+            email : email.value,
             date: date.value,
             color: ref('')
         });
         firstName.value = '';
         lastName.value = '';
-        address.value = '';
+        email.value = '';
         date.value = '';
     }    
     const deleteEntry = (index) => {
@@ -32,8 +32,29 @@ import {computed, ref} from 'vue'
 
     const data = computed(() => {
         const start = (page.value-1) * ROW_COUNT;
-        return entries.value.slice(start, start + ROW_COUNT);
+        return entries.value.sort((a,b) => a.date.localeCompare(b.date)).slice(start, start + ROW_COUNT);
     }) 
+
+    const onFirstNameChange = (e) => {
+        firstName.value = e.target.value.replace(/[^a-zA-Z]/g, '');
+        e.target.value = firstName.value;
+    }
+
+
+    const onLastNameChange = (e) => {
+        lastName.value = e.target.value.replace(/[^a-zA-Z]/g, '');
+        e.target.value = lastName.value;
+    }
+
+    const onEmailChange = (event) => {
+        const regex = /^[a-zA-Z]{3,}[0-9]{2,}@[a-zA-Z]{2,}\.[a-zA-Z]{2,}$/; // Custom regular expression for email validation
+        if (regex.test(event.target.value)) {
+            email.value = event.target.value;
+        } else {
+            event.target.value = email.value = '';
+        }
+    }
+
 
 </script>
 
@@ -42,11 +63,11 @@ import {computed, ref} from 'vue'
         <form @submit.prevent="addEntry" style="min-width: 350px;">
             <h2>Create a new entry</h2>
             <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" v-model="firstName" required><br>
+            <input type="text" id="firstName" :value="firstName" @input="onFirstNameChange" required><br>
             <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" v-model="lastName" required><br>
-            <label for="address">Address:</label>
-            <input type="text" id="address" v-model="address" required><br>
+            <input type="text" id="lastName" :value="lastName"  @input="onLastNameChange" required ><br>
+            <label for="address">Email:</label>
+            <input type="text" id="email" :value="email" @change="onEmailChange" required><br>
             <label for="date">Date Of Birth :</label>
             <input type="date" id="date" v-model="date" required><br>
             <button type="submit">Add</button>
@@ -59,7 +80,7 @@ import {computed, ref} from 'vue'
                         <tr>
                             <th style="border: 1px solid whitesmoke;">FirstName</th>
                             <th style="border: 1px solid whitesmoke;">LastName</th>
-                            <th style="border: 1px solid whitesmoke;">Address</th>
+                            <th style="border: 1px solid whitesmoke;">Email</th>
                             <th style="border: 1px solid whitesmoke">D.O.B</th>
                             <th style="border: 1px solid whitesmoke;">Action</th>
                         </tr>
@@ -68,7 +89,7 @@ import {computed, ref} from 'vue'
                         <tr class="output" v-for="(entry , index) in data" :key="index" :style="{color:entry.color, padding: '2px 12px'}">
                             <td>{{ entry.firstName }}</td>
                             <td>{{ entry.lastName }}</td>
-                            <td>{{ entry.address }}</td>
+                            <td>{{ entry.email }}</td>
                             <td style="min-width: 150px;">{{ entry.date }}</td>
                             <td style="display: flex;">
                                 <button @click="deleteEntry(index)">Delete</button>
@@ -80,6 +101,8 @@ import {computed, ref} from 'vue'
                                     <option value="cyan">Cyan</option>
                                     <option value="purple">Purple</option>
                                     <option value="Orange">Orange</option>
+                                    <option value="yellow">Yellow</option>
+                                    <option value="#FA8072">Salmon</option>
                                 </select>
                             </td>
                         </tr>
@@ -96,7 +119,7 @@ import {computed, ref} from 'vue'
         </div>
     </div>
 
-    <!-- <input type="checkbox" class="custom-checkbox" /> -->
+    <input type="checkbox" class="custom-checkbox" />
 </template>
 
 <style>
