@@ -1,9 +1,9 @@
 <script setup>
-import customerDetails from './components/customerDetails.vue'
+import customerDetails from "./components/customerDetails.vue";
 </script>
 
 <template>
-<customerDetails/>
+  <customerDetails />
 </template>
 
 <style scoped>
