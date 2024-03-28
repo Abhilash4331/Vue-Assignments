@@ -21,6 +21,7 @@ import { useAnimalStore } from '../../store/AnimalStore';
 
 const title = ref('');
 let selectedImage = null;
+let filetype = 'image';
 
 const props = defineProps(['active'])
 
@@ -28,6 +29,7 @@ const emit = defineEmits(['cancel', 'confirm'])
 
 const handleImageSelect = (event) => {
     const file = event.target.files[0];
+    filetype =  file.type.split("/")[0]; // image-video
     if (file) {
         selectedImage = URL.createObjectURL(file);
     }
@@ -38,6 +40,7 @@ const confirmSelection = () => {
     const data = {
         title: title.value,
         image: props.active == -1 ? selectedImage : useAnimalStore().list[props.active].image,
+        type: filetype
     };
 
     if (!data.title)

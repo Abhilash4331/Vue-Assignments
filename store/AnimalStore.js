@@ -4,9 +4,10 @@ import {  reactive } from "vue";
 export const useAnimalStore = defineStore("animalStore", () => {
   const animalList = reactive([]);
 
-  const addAnimal = (image, title) => {
+  const addAnimal = (image, title, type) => {
     animalList.push({
         title,
+        type,
         image,
         id: Math.random()
     })
@@ -16,10 +17,11 @@ export const useAnimalStore = defineStore("animalStore", () => {
     animalList.splice(index, 1)
   }
 
-  const updateAnimal = (image, title, index) => {
+  const updateAnimal = (image, title, type, index) => {
     animalList[index] = {
         image,
         title,
+        type,
         id: animalList[index].id
     }
   }

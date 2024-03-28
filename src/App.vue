@@ -38,9 +38,9 @@ const isPopupVisible = ref(false)
 
 const handleConfirm = (data) => {
   if (updateAnimalIndex.value == -1) {
-    animalStore.add(data.image, data.title);
+    animalStore.add(data.image, data.title, data.type);
   } else {
-    animalStore.update(data.image, data.title, updateAnimalIndex.value);
+    animalStore.update(data.image, data.title, data.type, updateAnimalIndex.value);
     updateAnimalIndex.value = -1;
   }
   isPopupVisible.value = false;

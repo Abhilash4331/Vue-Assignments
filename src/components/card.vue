@@ -8,8 +8,8 @@ defineEmits(["delete","update"]);
 <template>
   <div class="card">
     <div style="position: relative">
-      <!-- <video class="capture" :src="animal.image" loop autoplay muted volume="0.2"/> -->
-      <img class="capture" :src="animal.image" />
+      <video v-if="animal.type == 'video'" class="capture" :src="animal.image" loop autoplay muted volume="0.2"/>
+      <img v-else class="capture" :src="animal.image" />
       <div class="close" @click="$emit('delete')">
         <svg
           width="20px"
